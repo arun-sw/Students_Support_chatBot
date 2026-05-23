@@ -1,0 +1,141 @@
+   STUDENT SUPPORT CHATBOT — COMMAND REFERENCE
+   PyCharm Terminal (PowerShell)
+
+
+
+ 1. INSTALL & SETUP  (run only once)
+
+  Install all dependencies:
+    pip install -r requirements.txt
+
+  Install individually:
+    pip install fastapi
+    pip install uvicorn
+    pip install groq
+    pip install pymupdf
+    pip install pdfplumber
+    pip install python-multipart
+
+
+ 2. RUN THE SERVER
+
+
+  Start server (auto-restart on code change):
+    uvicorn main:app --reload
+
+  Start on specific port:
+    uvicorn main:app --reload --port 8000
+
+  Start and allow phone/other devices to connect:
+    uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+
+  Stop server:
+    Ctrl + C
+
+  Kill all Python processes (force stop):
+    taskkill /f /im python.exe
+
+ 3. TEST THE SERVER
+
+  Open in browser (health check):
+    http://127.0.0.1:8000/
+
+  Open full API test page:
+    http://127.0.0.1:8000/docs
+
+  Find your PC local IP (for real phone testing):
+    ipconfig
+
+ 4. CHAT HISTORY
+
+
+  Delete ALL chat history:
+    Remove-Item chat_history/*.json
+
+  Delete one user history:
+    Remove-Item chat_history/student_1.json
+
+  List all history files:
+    ls chat_history/
+
+ 5. UPLOADED DOCUMENTS
+
+  Delete ALL uploaded documents:
+    Remove-Item uploaded_docs/*
+
+  Delete one specific document:
+    Remove-Item uploaded_docs/fees.pdf
+
+  List all uploaded documents:
+    ls uploaded_docs/
+
+ 6. TEST API KEY (Groq)
+
+
+  Test if Groq key works:
+    python -c "from groq import Groq; c = Groq(api_key='YOUR_KEY'); r = c.chat.completions.create(model='llama-3.3-70b-versatile', messages=[{'role':'user','content':'hi'}], max_tokens=10); print('SUCCESS:', r.choices[0].message.content)"
+
+  Test PDF reading:
+    python -c "import fitz; doc = fitz.open('uploaded_docs/YOUR_FILE.pdf'); print([p.get_text()[:100] for p in doc])"
+
+ 7. ANDROID STUDIO CONNECTION
+
+  URL for Android Emulator:
+    http://10.0.2.2:8000
+
+  URL for Real Phone (same WiFi):
+    http://YOUR_PC_IP:8000
+    (find IP using: ipconfig)
+
+  API Endpoints:
+    POST   /chat                        → send message
+    GET    /chat/history/{user_id}      → get history
+    DELETE /chat/history/{user_id}      → clear history
+    POST   /admin/upload                → upload document
+    GET    /admin/documents             → list documents
+    DELETE /admin/documents/{filename} → delete document
+    GET    /                            → health check
+
+ 9. COMMON ERRORS & FIXES
+
+  Error: ModuleNotFoundError
+  Fix:   pip install MODULE_NAME
+
+  Error: Invalid API Key
+  Fix:   Check API_KEY in main.py line 5
+
+  Error: Address already in use
+  Fix:   taskkill /f /im python.exe
+         then run uvicorn again
+
+  Error: Connection refused in Android
+  Fix:   Make sure server is running
+         Use 10.0.2.2 for emulator
+         Use PC IP for real phone
+
+  Error: Empty or garbage reply
+  Fix:   Remove-Item chat_history/*.json
+         Use a new user_id in requests
+
+ 10. PROJECT FOLDER STRUCTURE
+
+  student-support-chatbot/
+  ├── main.py               ← backend code
+  ├── requirements.txt      ← all dependencies
+  ├── uploaded_docs/        ← admin uploaded files
+  │   ├── fees.pdf
+  │   └── rules.txt
+  └── chat_history/         ← saved conversations
+      ├── student_1.json
+      └── student_2.json
+
+   ADMIN CREDENTIALS (change in LoginActivity.java)
+
+  Email    : arunml2205@gmail.com
+  Password : 1234
+
+   GROQ FREE LIMITS
+
+  Requests per minute : 30
+  Requests per day    : 14,400
+  Cost                : FREE forever

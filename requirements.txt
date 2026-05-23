@@ -1,0 +1,17 @@
+fastapi
+uvicorn[standard]
+python-multipart
+pydantic
+
+# PDF extraction
+pymupdf
+pdfplumber
+
+# OpenAI SDK
+openai>=1.0.0
+
+# Pinecone vector database
+pinecone>=3.0.0
+
+# MongoDB driver
+pymongo>=4.0.0
